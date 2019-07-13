@@ -2,8 +2,9 @@
 from __future__ import unicode_literals
 from hashlib import md5
 from django.db import models
+from django.core import validators
 import bcrypt
-from datetime import datetime
+import datetime
 
 # Create your models here.
 class User(models.Model):
@@ -38,12 +39,21 @@ class User(models.Model):
 			return user
 		return None
 
+	@classmethod
+	def Validate(cls, user):
+		try:
+			validators.validate_email(user.email)
+			validators.validate_slug(user.name)
+			return True
+		except:
+			return False
+
 
 class Session(models.Model)::
 	id = models.AutoField(primary_key=True)
 	user = models.ForeignKey(to='User')
 	token = models.CharField(max_length=64, db_index=True)
-	created_at = models.DateTimeField(auto_now_add=True)
+	created_at = models.DateTimeField()
 	expiry_at = models.DateTimeField()
 
 	class Meta:
@@ -66,7 +76,7 @@ class Session(models.Model)::
 
 	@classmethod
 	def IsExpired(cls, session):
-		currentTime = datetime.now()
+		currentTime = datetime.datetime.now()
 		if session.expiry_at < currentTime:
 			return False
 		return True
