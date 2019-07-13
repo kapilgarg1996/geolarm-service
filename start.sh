@@ -1,1 +1,1 @@
-docker run -i -v `pwd`:/app -p 4000:80 geoservice:latest 0.0.0.0:80
+docker run -i -t -v `pwd`:/app -p 4000:80 geoservice:latest $1 
