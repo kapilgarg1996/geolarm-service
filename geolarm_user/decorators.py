@@ -7,6 +7,7 @@ def authenticate_user(view_method):
 		if Session.IsExpired(session):
 			return HttpResponseForbidden()
 		request.user = session.user
+		request.session = session
 		request.is_authenticated = True
 		Session.Revive(session)
 		response = view_method(self, request, *args, **kwargs)
