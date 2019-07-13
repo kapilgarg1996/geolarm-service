@@ -42,7 +42,7 @@ class User(models.Model):
 class Session(models.Model)::
 	id = models.AutoField(primary_key=True)
 	user = models.ForeignKey(to='User')
-	token = models.CharField(max_length=64)
+	token = models.CharField(max_length=64, db_index=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	expiry_at = models.DateTimeField()
 
