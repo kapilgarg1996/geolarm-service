@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from hashlib import md5
 from django.db import models
 import bcrypt
+from datetime import datetime
 
 # Create your models here.
 class User(models.Model):
@@ -36,3 +37,36 @@ class User(models.Model):
 		if bcrypt.checkpw(password, user.password):
 			return user
 		return None
+
+
+class Session(models.Model)::
+	id = models.AutoField(primary_key=True)
+	user = models.ForeignKey(to='User')
+	token = models.CharField(max_length=64)
+	created_at = models.DateTimeField(auto_now_add=True)
+	expiry_at = models.DateTimeField()
+
+	class Meta:
+		db_table = 'sessions'
+
+	def __str__(self):
+		return self.user.name
+
+	def save(self, *args, **kwargs):
+		self.token = bcrypt.hashpw(datetime.datetime.now().isoformat(), bcrypt.gensalt())
+		super(Session, self).save(args, kwargs)
+
+	@classmethod
+	def Revive(cls, session):
+		if session is not None:
+			session.expiry_at = session.expiry_at + datetime.timedelta(days=1)
+			session.save()
+			return session
+		return None
+
+	@classmethod
+	def IsExpired(cls, session):
+		currentTime = datetime.now()
+		if session.expiry_at < currentTime:
+			return False
+		return True
