@@ -49,9 +49,9 @@ class User(models.Model):
 			return False
 
 
-class Session(models.Model)::
+class Session(models.Model):
 	id = models.AutoField(primary_key=True)
-	user = models.ForeignKey(to='User')
+	user = models.ForeignKey(to='User', on_delete=models.CASCADE)
 	token = models.CharField(max_length=64, db_index=True)
 	created_at = models.DateTimeField()
 	expiry_at = models.DateTimeField()
