@@ -14,8 +14,8 @@ class HolidayCalendar(models.Model):
 		db_table = 'holidays'
 
 	@classmethod
-	def IsHoliday(cls, date, country):
-		holidays = cls.objects.filter(date=date, country=country).count()
-		if holidays >= 1:
-			return True
-		return False
+	def IsHoliday(cls, date, country='IN'):
+		holidays = cls.objects.filter(date=date, country=country)
+		if holidays.count() >= 1:
+			return holidays
+		return None
