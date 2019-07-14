@@ -20,4 +20,6 @@ from django.urls import include, path
 urlpatterns = [
     url('^admin/', admin.site.urls),
     path('logger/', include('logger.urls')),
+    path('user/', include(('geolarm_user.urls', 'geolarm_user'), namespace='geolarm_user')),
+    path('holiday/', include(('holiday.urls', 'holiday'), namespace='holiday'))
 ]
